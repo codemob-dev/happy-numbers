@@ -1,0 +1,55 @@
+#content {
+    position: absolute;
+    top: 0;
+    min-height: calc(100vh - 2px - 4vmax);
+    left: calc((100vw - max(60vw, 100vmin)) / 2);
+    right: calc((100vw - max(60vw, 100vmin)) / 2);
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-style: solid;
+    border-color: rgb(228, 228, 228);
+    padding: 2vmax;
+    background-color: rgba(0, 0, 0, 0.39);
+}
+
+h1 {
+    text-align: center;
+}
+
+span#is-happy-false {
+    color: red;
+}
+span#is-happy-false::after {
+    content: " is not happy.";
+}
+
+span#is-happy-true {
+    color: green;
+}
+span#is-happy-true::after {
+    content: " is happy!";
+}
+
+.math {
+    font-family: "Noto Sans Math", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: "Comic Neue", cursive;
+    font-weight: 400;
+    font-style: normal;
+    background-color: rgb(65, 65, 65);
+    color: rgb(228, 228, 228);
+}
+
+* {
+    font-size: 2vh;
+}
+
+h1 {
+    font-size: 5vh;
+}
