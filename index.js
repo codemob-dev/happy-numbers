@@ -1,6 +1,9 @@
+sleep=a=>new Promise(b=>setTimeout(b,a));
+
 document.addEventListener("DOMContentLoaded", ()=>{
     const input = document.getElementById("input");
     const output = document.getElementById("output");
+    const next_happy = document.getElementById("next-happy");
 
     const base = 10;
     const max_values = 25;
@@ -42,7 +45,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
 
         let isHappy = num == 1;
-        output.innerHTML = `<span id="is-happy-${isHappy}">${originalNum}</span><br><br><span class="math">${output.innerHTML}</span>`
+        output.innerHTML = `<span id="is-happy-${isHappy}">${originalNum}</span><br><br><span class="math">${output.innerHTML}</span>`;
+        return isHappy;
     }
 
     happyNumberCheck();
@@ -53,5 +57,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
         input.value = Number.parseInt(input.value);
         happyNumberCheck();
+    });
+
+    next_happy.addEventListener("click", async event=>{
+        do {
+            input.value = +input.value + 1;
+        } while (!happyNumberCheck(+input.value))
     })
 });
