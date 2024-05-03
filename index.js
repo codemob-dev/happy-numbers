@@ -3,7 +3,12 @@ sleep=a=>new Promise(b=>setTimeout(b,a));
 document.addEventListener("DOMContentLoaded", ()=>{
     const input = document.getElementById("input");
     const output = document.getElementById("output");
+
     const next_happy = document.getElementById("next-happy");
+    const previous_happy = document.getElementById("previous-happy");
+    
+    const run_graph = document.getElementById("run-graph");
+    const current_percent = document.getElementById("current-percent");
 
     const base = 10;
     const max_values = 25;
@@ -63,5 +68,65 @@ document.addEventListener("DOMContentLoaded", ()=>{
         do {
             input.value = +input.value + 1;
         } while (!happyNumberCheck(+input.value))
+    });
+
+    previous_happy.addEventListener("click", event=>{
+        do {
+            if (+input.value <= 1) {
+                return;
+            }
+            input.value = +input.value - 1;
+        } while (!happyNumberCheck(+input.value))
+    });
+
+    var graph_running = false;
+
+    var graph_data;
+    function graph_start() {
+        input.value = 1;
+        graph_data = {
+            num_happy: 0,
+            num_unhappy: 0
+        }
+    }
+
+    function graph_tick() {
+        if (happyNumberCheck()) {
+            graph_data.num_happy ++;
+        } else {
+            graph_data.num_unhappy ++;
+        }
+        input.value = +input.value + 1;
+
+        let percent_happy = (graph_data.num_happy / (graph_data.num_happy + graph_data.num_unhappy));
+        percent_happy = Math.round(percent_happy * 10000000) / 100000;
+
+        current_percent.innerText = `${percent_happy}% of numbers are happy`;
+    }
+
+    function graph_stop() {
+        current_percent.innerText = "";
+    }
+
+    run_graph.addEventListener("click", event=>{
+        graph_running = !graph_running;
+        
+        input.disabled = next_happy.disabled = previous_happy.disabled = graph_running;
+
+        if (graph_running) {
+            run_graph.innerText = "Stop Graph";
+
+            graph_start();
+            (function fn() {
+                graph_tick();
+                if (graph_running) {
+                    setTimeout(fn, 0);
+                } else {
+                    graph_stop();
+                }
+            })();
+        } else {
+            run_graph.innerText = "Run Graph";
+        }
     })
 });
