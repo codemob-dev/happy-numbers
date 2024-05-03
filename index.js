@@ -86,7 +86,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         input.value = 1;
         graph_data = {
             num_happy: 0,
-            num_unhappy: 0
+            num_unhappy: 0,
+            percentage_data: []
         }
     }
 
@@ -99,13 +100,26 @@ document.addEventListener("DOMContentLoaded", ()=>{
         input.value = +input.value + 1;
 
         let percent_happy = (graph_data.num_happy / (graph_data.num_happy + graph_data.num_unhappy));
-        percent_happy = Math.round(percent_happy * 10000000) / 100000;
+        
+        graph_data.percentage_data.push(percent_happy);
 
-        current_percent.innerText = `${percent_happy}% of numbers are happy`;
+        current_percent.innerText = `${Math.round(percent_happy * 10000000) / 100000}% of numbers are happy`;
     }
 
     function graph_stop() {
         current_percent.innerText = "";
+
+        let data = ["Number Processed,Fraction Happy"]
+        for (let i = 0; i < graph_data.percentage_data.length; i++) {
+            const datapoint = graph_data.percentage_data[i];
+            data.push(`${i},${datapoint}`);
+        }
+        data = data.join('\n');
+
+        let saveElement = document.createElement("a");
+        saveElement.href = `data:application/octet-stream,${encodeURIComponent(data)}`;
+        saveElement.download = "graph_data.csv";
+        saveElement.click();
     }
 
     run_graph.addEventListener("click", event=>{
